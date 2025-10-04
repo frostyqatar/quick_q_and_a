@@ -173,26 +173,48 @@
                 </div>
             </div>
 
-            <div class="question-display">
-                <div class="category-badge" id="question-category">عام</div>
-                <div class="question-text" id="question-text">ما هو السؤال؟</div>
-                <div id="question-media" class="media-container">
-                    <!-- Image or video will be inserted here -->
+            <div class="question-layout">
+                <div class="question-display">
+                    <div class="category-badge" id="question-category">عام</div>
+                    <div class="question-text" id="question-text">ما هو السؤال؟</div>
+                    <div id="question-media" class="media-container">
+                        <!-- Image or video will be inserted here -->
+                    </div>
+                    
+                    <div class="answer-buttons">
+                        <button class="btn btn-correct" id="correct-btn">
+                            <span>✓ إجابة صحيحة</span>
+                        </button>
+                        <button class="btn btn-wrong" id="incorrect-btn">
+                            <span>✗ إجابة خاطئة</span>
+                        </button>
+                    </div>
                 </div>
                 
-                <div class="answer-buttons">
-                    <button class="btn btn-correct" id="correct-btn">
-                        <span>✓ إجابة صحيحة</span>
-                    </button>
-                    <button class="btn btn-wrong" id="incorrect-btn">
-                        <span>✗ إجابة خاطئة</span>
-                    </button>
+                <div class="question-scoreboard">
+                    <div class="scoreboard-teams">
+                        <div class="scoreboard-team team-1" id="scoreboard-team1">
+                            <div class="team-name" id="scoreboard-team1-name">الفريق الأول</div>
+                            <div class="team-score" id="scoreboard-team1-correct">0</div>
+                        </div>
+                        
+                        <div class="scoreboard-team team-2" id="scoreboard-team2">
+                            <div class="team-name" id="scoreboard-team2-name">الفريق الثاني</div>
+                            <div class="team-score" id="scoreboard-team2-correct">0</div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
             <div class="end-game-section">
-                <button class="btn btn-danger" id="end-game-btn">
-                    <span>🏁 إنهاء اللعبة</span>
+                <button class="btn btn-danger end-game-btn" id="end-game-btn">
+                    <svg class="end-game-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z" fill="currentColor"/>
+                        <path d="M12 18L13.5 20.5L16 19L13.5 17.5L12 18Z" fill="currentColor"/>
+                        <path d="M12 18L10.5 20.5L8 19L10.5 17.5L12 18Z" fill="currentColor"/>
+                        <circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.6"/>
+                    </svg>
+                    <span>إنهاء اللعبة</span>
                 </button>
             </div>
         </div>
@@ -210,9 +232,6 @@
                 <div class="correct-answer">
                     <div class="answer-label">الجواب:</div>
                     <div class="answer-text" id="answer-text">الإجابة هنا</div>
-                    <div id="answer-media" class="media-container">
-                        <!-- Media will be inserted here -->
-                    </div>
                 </div>
 
                 <button class="btn btn-primary" id="next-question-btn">

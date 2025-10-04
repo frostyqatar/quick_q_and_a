@@ -56,7 +56,8 @@ class GameState {
             currentQuestionIndex: this.currentQuestionIndex,
             totalQuestionsPlayed: this.totalQuestionsPlayed,
             totalCorrectAnswers: this.totalCorrectAnswers,
-            questions: this.questions
+            questions: this.questions,
+            usedQuestions: Array.from(this.usedQuestions) // Convert Set to Array for storage
         };
         localStorage.setItem('gameState', JSON.stringify(state));
     }
@@ -78,6 +79,7 @@ class GameState {
                 this.totalQuestionsPlayed = state.totalQuestionsPlayed || 0;
                 this.totalCorrectAnswers = state.totalCorrectAnswers || 0;
                 this.questions = state.questions || [];
+                this.usedQuestions = new Set(state.usedQuestions || []); // Restore used questions Set
             } catch (e) {
                 console.error('Error loading game state:', e);
             }
@@ -298,7 +300,6 @@ class UIManager {
         };
         
         this.currentMedia = null;
-        this.currentAnswerMedia = null;
         
         this.elements = {
             // Home screen
@@ -339,8 +340,15 @@ class UIManager {
             answerCategory: document.getElementById('answer-category'),
             answerQuestionText: document.getElementById('answer-question-text'),
             answerText: document.getElementById('answer-text'),
-            answerMedia: document.getElementById('answer-media'),
             nextQuestionBtn: document.getElementById('next-question-btn'),
+            
+            // Question scoreboard
+            scoreboardTeam1Name: document.getElementById('scoreboard-team1-name'),
+            scoreboardTeam2Name: document.getElementById('scoreboard-team2-name'),
+            scoreboardTeam1Score: document.getElementById('scoreboard-team1-correct'),
+            scoreboardTeam2Score: document.getElementById('scoreboard-team2-correct'),
+            scoreboardTeam1: document.getElementById('scoreboard-team1'),
+            scoreboardTeam2: document.getElementById('scoreboard-team2'),
             
             // Results screen
             winnerTeam: document.getElementById('winner-team'),
@@ -441,6 +449,9 @@ class UIManager {
             this.elements.timerDisplayQuestion.textContent = this.timerManager ? this.timerManager.getFormattedTime().replace(':', '') : '60';
         }
 
+        // Update scoreboard
+        this.updateScoreboard(gameState);
+
         // Update question
         if (gameState.questions.length > 0 && gameState.currentQuestionIndex < gameState.questions.length) {
             const question = gameState.questions[gameState.currentQuestionIndex];
@@ -459,6 +470,32 @@ class UIManager {
             
             // Update media
             this.updateMedia(question.media);
+        }
+    }
+
+    updateScoreboard(gameState) {
+        // Update team names
+        if (this.elements.scoreboardTeam1Name) {
+            this.elements.scoreboardTeam1Name.textContent = gameState.team1Name;
+        }
+        if (this.elements.scoreboardTeam2Name) {
+            this.elements.scoreboardTeam2Name.textContent = gameState.team2Name;
+        }
+
+        // Update team scores (only correct answers)
+        if (this.elements.scoreboardTeam1Score) {
+            this.elements.scoreboardTeam1Score.textContent = gameState.team1Score;
+        }
+        if (this.elements.scoreboardTeam2Score) {
+            this.elements.scoreboardTeam2Score.textContent = gameState.team2Score;
+        }
+
+        // Update active team highlighting
+        if (this.elements.scoreboardTeam1) {
+            this.elements.scoreboardTeam1.classList.toggle('active', gameState.currentTeam === 1);
+        }
+        if (this.elements.scoreboardTeam2) {
+            this.elements.scoreboardTeam2.classList.toggle('active', gameState.currentTeam === 2);
         }
     }
 
@@ -561,87 +598,8 @@ class UIManager {
         if (this.elements.answerText) {
             this.elements.answerText.textContent = displayAnswerText;
         }
-        
-        // Update media
-        this.updateAnswerMedia(question.media);
     }
 
-    updateAnswerMedia(media) {
-        // Only update if media has changed
-        if (this.currentAnswerMedia && this.currentAnswerMedia.url === media?.url) {
-            return; // Media hasn't changed, don't recreate
-        }
-        
-        this.elements.answerMedia.innerHTML = '';
-        this.currentAnswerMedia = media;
-        
-        if (media) {
-            if (media.type === 'image') {
-                const img = document.createElement('img');
-                img.src = media.url;
-                img.alt = 'Answer Image';
-                img.style.maxWidth = '400px';
-                img.style.maxHeight = '400px';
-                img.style.width = 'auto';
-                img.style.height = 'auto';
-                img.style.objectFit = 'contain';
-                img.onerror = () => {
-                    console.log('Failed to load image:', media.url);
-                    this.elements.answerMedia.innerHTML = '<p style="color: #e53e3e; text-align: center;">فشل في تحميل الصورة</p>';
-                };
-                this.elements.answerMedia.appendChild(img);
-            } else if (media.type === 'video') {
-                const video = document.createElement('video');
-                video.src = media.url;
-                video.controls = true;
-                video.style.maxWidth = '100%';
-                video.style.height = 'auto';
-                video.onerror = () => {
-                    console.log('Failed to load video:', media.url);
-                    this.elements.answerMedia.innerHTML = '<p style="color: #e53e3e; text-align: center;">فشل في تحميل الفيديو</p>';
-                };
-                this.elements.answerMedia.appendChild(video);
-            } else if (media.type === 'youtube') {
-                // Convert YouTube URL to embed format
-                let embedUrl = media.url;
-                if (media.url.includes('youtu.be/')) {
-                    const videoId = media.url.split('youtu.be/')[1].split('?')[0];
-                    embedUrl = `https://www.youtube.com/embed/${videoId}`;
-                } else if (media.url.includes('youtube.com/watch')) {
-                    const videoId = media.url.split('v=')[1].split('&')[0];
-                    embedUrl = `https://www.youtube.com/embed/${videoId}`;
-                }
-                
-                const iframe = document.createElement('iframe');
-                iframe.src = embedUrl;
-                iframe.width = '560';
-                iframe.height = '315';
-                iframe.style.border = 'none';
-                iframe.allowFullscreen = true;
-                iframe.style.maxWidth = '100%';
-                iframe.onerror = () => {
-                    console.log('Failed to load YouTube video:', media.url);
-                    this.elements.answerMedia.innerHTML = '<p style="color: #e53e3e; text-align: center;">فشل في تحميل فيديو يوتيوب</p>';
-                };
-                this.elements.answerMedia.appendChild(iframe);
-            } else if (media.type === 'audio') {
-                const audio = document.createElement('audio');
-                audio.src = media.url;
-                audio.controls = true;
-                audio.preload = 'metadata';
-                audio.style.maxWidth = '100%';
-                audio.style.width = '100%';
-                audio.style.pointerEvents = 'auto';
-                audio.style.userSelect = 'auto';
-                audio.style.touchAction = 'manipulation';
-                audio.onerror = () => {
-                    console.log('Failed to load audio:', media.url);
-                    this.elements.answerMedia.innerHTML = '<p style="color: #e53e3e; text-align: center;">فشل في تحميل الملف الصوتي</p>';
-                };
-                this.elements.answerMedia.appendChild(audio);
-            }
-        }
-    }
 
     updateResultsScreen(gameState) {
         // Determine winner
@@ -789,6 +747,12 @@ class GameController {
     }
 
     nextQuestion() {
+        // Check if we've played all questions
+        if (this.gameState.totalQuestionsPlayed >= this.gameState.questions.length) {
+            this.endGame();
+            return;
+        }
+        
         const question = this.gameState.getRandomQuestion();
         
         if (!question) {

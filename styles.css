@@ -485,6 +485,13 @@ input[type="text"]:focus {
 }
 
 /* Question Screen */
+.question-layout {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+    align-items: flex-start;
+}
+
 .question-display {
     background: white;
     border-radius: 25px;
@@ -493,6 +500,7 @@ input[type="text"]:focus {
     text-align: center;
     position: relative;
     overflow: hidden;
+    flex: 1;
 }
 
 .question-display::before {
@@ -568,10 +576,173 @@ input[type="text"]:focus {
     box-shadow: 0 15px 40px rgba(245, 101, 101, 0.5);
 }
 
+/* Question Scoreboard */
+.question-scoreboard {
+    background: white;
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    position: relative;
+    overflow: hidden;
+    width: 200px;
+    flex-shrink: 0;
+}
+
+.question-scoreboard::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, rgba(102, 126, 234, 0.06), transparent);
+    border-radius: 50%;
+}
+
+.scoreboard-teams {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+    z-index: 1;
+}
+
+.scoreboard-team {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-radius: 10px;
+    padding: 12px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.scoreboard-team::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    transition: all 0.3s ease;
+}
+
+.scoreboard-team.team-1::before {
+    background: linear-gradient(90deg, #667eea, #764ba2);
+}
+
+.scoreboard-team.team-2::before {
+    background: linear-gradient(90deg, #f56565, #e53e3e);
+}
+
+.scoreboard-team.active {
+    transform: scale(1.02);
+    box-shadow: 0 6px 15px rgba(102, 126, 234, 0.12);
+    border-color: #667eea;
+    background: linear-gradient(135deg, #f0f4ff 0%, #e6f3ff 100%);
+}
+
+.scoreboard-team .team-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin: 0 0 8px 0;
+    line-height: 1.2;
+}
+
+.scoreboard-team .team-score {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #2d3748;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+}
+
+.scoreboard-team.team-2 .team-score {
+    background: linear-gradient(135deg, #f56565, #e53e3e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
 .end-game-section {
     margin-top: 30px;
     text-align: center;
     padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.end-game-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 40px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+    color: white;
+    box-shadow: 0 10px 30px rgba(245, 101, 101, 0.4);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border: none;
+    cursor: pointer;
+}
+
+.end-game-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.end-game-btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.end-game-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(245, 101, 101, 0.5);
+}
+
+.end-game-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    animation: sparkle 2s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+    0%, 100% { 
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    50% { 
+        transform: scale(1.1) rotate(180deg);
+        opacity: 0.8;
+    }
+}
+
+.end-game-btn span {
+    position: relative;
+    z-index: 1;
 }
 
 /* Answer Screen */
@@ -769,6 +940,7 @@ input[type="text"]:focus {
     overflow: hidden;
     max-width: 800px;
     width: 100%;
+    margin: 0 auto;
 }
 
 .admin-content::before {
@@ -796,7 +968,7 @@ input[type="text"]:focus {
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    text-align: right;
+    text-align: center;
 }
 
 .admin-card::before {
@@ -856,7 +1028,7 @@ input[type="text"]:focus {
     font-weight: 600;
     color: #2d3748;
     margin-bottom: 15px;
-    text-align: right;
+    text-align: center;
 }
 
 #questions-input {
@@ -871,7 +1043,7 @@ input[type="text"]:focus {
     font-family: inherit;
     transition: all 0.3s ease;
     background: white;
-    text-align: right;
+    text-align: center;
 }
 
 #questions-input:focus {
@@ -886,7 +1058,7 @@ input[type="text"]:focus {
     border: 2px solid #81e6d9;
     border-radius: 15px;
     padding: 25px;
-    text-align: right;
+    text-align: center;
 }
 
 .format-info h3 {
@@ -907,14 +1079,14 @@ input[type="text"]:focus {
     font-size: 1.1rem;
     font-weight: 500;
     margin-bottom: 8px;
-    padding-right: 20px;
+    padding-left: 20px;
     position: relative;
 }
 
 .format-info li::before {
     content: '✓';
     position: absolute;
-    right: 0;
+    left: 0;
     top: 0;
     color: #48bb78;
     font-weight: bold;
@@ -973,6 +1145,29 @@ input[type="text"]:focus {
     .admin-actions {
         flex-direction: column;
         align-items: center;
+    }
+    
+    .question-layout {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .question-scoreboard {
+        width: 100%;
+        padding: 15px;
+    }
+    
+    .scoreboard-teams {
+        flex-direction: row;
+        gap: 15px;
+    }
+    
+    .scoreboard-team {
+        flex: 1;
+    }
+    
+    .scoreboard-team .team-score {
+        font-size: 1.3rem;
     }
 }
 
