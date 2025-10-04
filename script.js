@@ -356,7 +356,12 @@ class UIManager {
             winnerScore: document.getElementById('winner-score'),
             loserScore: document.getElementById('loser-score'),
             playAgainBtn: document.getElementById('play-again-btn'),
-            newGameBtn: document.getElementById('new-game-btn')
+            newGameBtn: document.getElementById('new-game-btn'),
+            
+            // Modal elements
+            noQuestionsModal: document.getElementById('no-questions-modal'),
+            modalClose: document.querySelector('.modal-close'),
+            modalCloseBtn: document.querySelector('.modal-close-btn')
         };
     }
 
@@ -378,7 +383,8 @@ class UIManager {
     }
 
     updateHomeScreen(gameState) {
-        this.elements.startGame.disabled = !gameState.team1Name || !gameState.team2Name || gameState.questions.length === 0;
+        // Only disable button if team names are missing, not if questions are missing
+        this.elements.startGame.disabled = !gameState.team1Name || !gameState.team2Name;
     }
 
     updateGameScreen(gameState) {
@@ -693,6 +699,18 @@ class UIManager {
             modal.classList.remove('active');
         }
     }
+
+    showNoQuestionsModal() {
+        if (this.elements.noQuestionsModal) {
+            this.elements.noQuestionsModal.classList.add('active');
+        }
+    }
+
+    hideNoQuestionsModal() {
+        if (this.elements.noQuestionsModal) {
+            this.elements.noQuestionsModal.classList.remove('active');
+        }
+    }
 }
 
 // Game Controller
@@ -773,6 +791,28 @@ class GameController {
             this.newGame();
         });
 
+        // Modal close event listeners
+        if (this.uiManager.elements.modalClose) {
+            this.uiManager.elements.modalClose.addEventListener('click', () => {
+                this.uiManager.hideNoQuestionsModal();
+            });
+        }
+
+        if (this.uiManager.elements.modalCloseBtn) {
+            this.uiManager.elements.modalCloseBtn.addEventListener('click', () => {
+                this.uiManager.hideNoQuestionsModal();
+            });
+        }
+
+        // Close modal when clicking outside
+        if (this.uiManager.elements.noQuestionsModal) {
+            this.uiManager.elements.noQuestionsModal.addEventListener('click', (e) => {
+                if (e.target === this.uiManager.elements.noQuestionsModal) {
+                    this.uiManager.hideNoQuestionsModal();
+                }
+            });
+        }
+
         // Add keyboard shortcut to toggle between moderator and public view
         document.addEventListener('keydown', (event) => {
             if (event.key === 'F11' || event.key === 'F12') {
@@ -783,7 +823,11 @@ class GameController {
     }
 
     startGame() {
-        if (this.gameState.questions.length === 0) return;
+        // Check if there are no questions and show modal
+        if (this.gameState.questions.length === 0) {
+            this.uiManager.showNoQuestionsModal();
+            return;
+        }
 
         this.gameState.gameStarted = true;
         this.gameState.currentTeam = 1;
@@ -931,7 +975,7 @@ class GameController {
                 this.indicatorTimeout = setTimeout(() => {
                     console.log('Auto-hiding indicator after 20 seconds');
                     this.hideIndicator();
-                }, 20000);
+                }, 6000);
                 console.log('Timeout set for 20 seconds');
             } else {
                 console.log('Indicator element not found in active screen');

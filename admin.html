@@ -72,12 +72,57 @@ H2O"></textarea>
                 </div>
 
                 <div class="admin-actions">
+                    <button id="chatgpt-questions" class="btn btn-info">
+                        <span>🤖 أسئلة من جات جي بي تي</span>
+                    </button>
                     <button id="save-questions" class="btn btn-success" disabled>
                         <span>💾 حفظ الأسئلة</span>
                     </button>
                     <a href="index.html" class="btn btn-primary">
                         <span>🏠 العودة للصفحة الرئيسية</span>
                     </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ChatGPT Questions Modal -->
+    <div id="chatgpt-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🤖 مولد الأسئلة من ChatGPT</h2>
+                <span class="modal-close" id="chatgpt-modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="chatgpt-instructions">
+                    <h3>📋 التعليمات:</h3>
+                    <p>اكتب الفئات → انسخ النص → الصق في ChatGPT → انسخ النتيجة → الصق هنا</p>
+                </div>
+                
+                <div class="input-group">
+                    <label for="categories-input">الفئات المطلوبة:</label>
+                    <input type="text" id="categories-input" placeholder="مثال: علوم، تاريخ، جغرافيا، رياضيات، أدب" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 0.9rem;">
+                </div>
+                
+                <div class="prompt-container">
+                    <label for="chatgpt-prompt">النص للنسخ إلى ChatGPT:</label>
+                    <textarea id="chatgpt-prompt" readonly></textarea>
+                    <button id="copy-prompt" class="btn btn-secondary">
+                        <span>📋 نسخ النص</span>
+                    </button>
+                </div>
+                
+                <div class="result-container">
+                    <label for="chatgpt-result">الصق النتيجة من ChatGPT هنا:</label>
+                    <textarea id="chatgpt-result" placeholder="الصق النتيجة من ChatGPT هنا..."></textarea>
+                    <div class="modal-actions">
+                        <button id="use-result" class="btn btn-success">
+                            <span>✅ استخدام النتيجة</span>
+                        </button>
+                        <button id="cancel-chatgpt" class="btn btn-secondary">
+                            <span>❌ إلغاء</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
