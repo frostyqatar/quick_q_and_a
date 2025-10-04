@@ -1,0 +1,16 @@
+{
+  "name": "quick-q-and-a",
+  "version": "1.0.0",
+  "description": "A quiz game with two teams, timer, and moderator controls",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server -p 3000 -o",
+    "build": "echo 'Static HTML/CSS/JS project - no build step needed'"
+  },
+  "keywords": ["quiz", "game", "quiz", "arabic", "timer"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}

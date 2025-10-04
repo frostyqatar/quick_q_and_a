@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سؤال وجواب</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Home Screen -->
+    <div id="home-screen" class="screen active">
+        <div class="container">
+            <div class="home-content">
+                <!-- Logo SVG -->
+                <div class="logo-container">
+                    <svg class="logo-svg" width="150" height="150" viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="75" cy="75" r="70" fill="url(#grad1)" opacity="0.2"/>
+                        <circle cx="75" cy="75" r="60" stroke="url(#grad2)" stroke-width="4" fill="none"/>
+                        <text x="75" y="85" text-anchor="middle" font-size="60" font-weight="bold" fill="url(#grad2)">؟</text>
+                        <defs>
+                            <linearGradient id="grad1" x1="0" y1="0" x2="150" y2="150">
+                                <stop offset="0%" style="stop-color:#667eea"/>
+                                <stop offset="100%" style="stop-color:#764ba2"/>
+                            </linearGradient>
+                            <linearGradient id="grad2" x1="0" y1="0" x2="150" y2="150">
+                                <stop offset="0%" style="stop-color:#667eea"/>
+                                <stop offset="50%" style="stop-color:#764ba2"/>
+                                <stop offset="100%" style="stop-color:#f56565"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+
+                <h1>سؤال وجواب</h1>
+                <p class="subtitle">تحدى فريقك واختبر معلوماتك!</p>
+
+                <div class="team-setup">
+                    <div class="team-input-card team-1">
+                        <svg class="team-icon" viewBox="0 0 60 60" fill="none">
+                            <circle cx="30" cy="30" r="28" fill="url(#teamGrad1)" opacity="0.2"/>
+                            <circle cx="30" cy="22" r="10" fill="url(#teamGrad1)"/>
+                            <path d="M15 45c0-8 6.716-15 15-15s15 7 15 15" fill="url(#teamGrad1)"/>
+                            <defs>
+                                <linearGradient id="teamGrad1" x1="0" y1="0" x2="60" y2="60">
+                                    <stop offset="0%" style="stop-color:#667eea"/>
+                                    <stop offset="100%" style="stop-color:#764ba2"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <div class="team-label">الفريق الأول</div>
+                        <input type="text" id="team1-name" placeholder="أدخل اسم الفريق">
+                    </div>
+
+                    <div class="team-input-card team-2">
+                        <svg class="team-icon" viewBox="0 0 60 60" fill="none">
+                            <circle cx="30" cy="30" r="28" fill="url(#teamGrad2)" opacity="0.2"/>
+                            <circle cx="30" cy="22" r="10" fill="url(#teamGrad2)"/>
+                            <path d="M15 45c0-8 6.716-15 15-15s15 7 15 15" fill="url(#teamGrad2)"/>
+                            <defs>
+                                <linearGradient id="teamGrad2" x1="0" y1="0" x2="60" y2="60">
+                                    <stop offset="0%" style="stop-color:#f56565"/>
+                                    <stop offset="100%" style="stop-color:#e53e3e"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <div class="team-label">الفريق الثاني</div>
+                        <input type="text" id="team2-name" placeholder="أدخل اسم الفريق">
+                    </div>
+                </div>
+
+                <button id="start-game" class="btn btn-success" disabled>
+                    <span>🎮 ابدأ اللعبة</span>
+                </button>
+
+                <div class="admin-link">
+                    <a href="admin.html">
+                        ⚙️ إعداد الأسئلة
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Screen (Public Display) -->
+    <div id="game-screen" class="screen">
+        <div class="container">
+            <div class="display-mode-indicator">
+                <div class="mode-badge public">
+                    📺 العرض العام - اضغط F11 للتبديل لوضع المشرف
+                </div>
+            </div>
+            <div class="game-header">
+                <div class="current-turn">
+                    <div class="turn-badge" id="current-team-display">دور الفريق الأول</div>
+                </div>
+                <div class="progress-timer">
+                    <div class="question-progress">
+                        <span id="current-question-number">1</span> / <span id="total-questions">10</span>
+                    </div>
+                    <div class="timer-circle">
+                        <span id="timer-display">60</span>
+                        <svg class="pause-indicator" id="pause-indicator" style="display: none;" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                            <rect x="6" y="4" width="2" height="12" rx="1"/>
+                            <rect x="12" y="4" width="2" height="12" rx="1"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="scores-container">
+                <div class="team-score-card team-1 active" id="team1-score-display">
+                    <div class="team-name" id="team1-name-display">الفريق الأول</div>
+                    <div class="score-display">
+                        <div class="score-item">
+                            <div class="score-label">✓ صحيح</div>
+                            <div class="score-value" id="team1-score">0</div>
+                        </div>
+                        <div class="score-item wrong">
+                            <div class="score-label">✗ خطأ</div>
+                            <div class="score-value" id="team1-wrong">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-score-card team-2" id="team2-score-display">
+                    <div class="team-name" id="team2-name-display">الفريق الثاني</div>
+                    <div class="score-display">
+                        <div class="score-item">
+                            <div class="score-label">✓ صحيح</div>
+                            <div class="score-value" id="team2-score">0</div>
+                        </div>
+                        <div class="score-item wrong">
+                            <div class="score-label">✗ خطأ</div>
+                            <div class="score-value" id="team2-wrong">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Question Screen (Moderator Only) -->
+    <div id="question-screen" class="screen">
+        <div class="container">
+            <div class="display-mode-indicator">
+                <div class="mode-badge moderator">
+                    🎮 وضع المشرف - اضغط F11 للتبديل للعرض العام
+                </div>
+            </div>
+            <div class="game-header">
+                <div class="current-turn">
+                    <div class="turn-badge" id="question-team-display">دور الفريق الأول</div>
+                </div>
+                <div class="progress-timer">
+                    <div class="question-progress">
+                        <span id="question-number">1</span> / <span id="total-questions-display">10</span>
+                    </div>
+                    <div class="timer-controls">
+                        <div class="timer-circle">
+                            <span id="timer-display-question">60</span>
+                            <svg class="pause-indicator" id="pause-indicator-question" style="display: none;" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <rect x="6" y="4" width="2" height="12" rx="1"/>
+                                <rect x="12" y="4" width="2" height="12" rx="1"/>
+                            </svg>
+                        </div>
+                        <button id="pause-timer-btn" class="btn btn-warning timer-btn">
+                            <span>⏸️ إيقاف</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-display">
+                <div class="category-badge" id="question-category">عام</div>
+                <div class="question-text" id="question-text">ما هو السؤال؟</div>
+                <div id="question-media" class="media-container">
+                    <!-- Image or video will be inserted here -->
+                </div>
+                
+                <div class="answer-buttons">
+                    <button class="btn btn-correct" id="correct-btn">
+                        <span>✓ إجابة صحيحة</span>
+                    </button>
+                    <button class="btn btn-wrong" id="incorrect-btn">
+                        <span>✗ إجابة خاطئة</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="end-game-section">
+                <button class="btn btn-danger" id="end-game-btn">
+                    <span>🏁 إنهاء اللعبة</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Answer Display Screen -->
+    <div id="answer-screen" class="screen">
+        <div class="container">
+            <div class="answer-reveal">
+                <div class="answer-header">الإجابة الصحيحة</div>
+                
+                <div class="category-badge" id="answer-category">عام</div>
+                <div class="question-text" id="answer-question-text">السؤال هنا</div>
+                
+                <div class="correct-answer">
+                    <div class="answer-label">الجواب:</div>
+                    <div class="answer-text" id="answer-text">الإجابة هنا</div>
+                    <div id="answer-media" class="media-container">
+                        <!-- Media will be inserted here -->
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" id="next-question-btn">
+                    <span>السؤال التالي →</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Screen -->
+    <div id="results-screen" class="screen">
+        <div class="container">
+            <div class="results-container">
+                <svg class="trophy-icon" viewBox="0 0 120 120" fill="none">
+                    <circle cx="60" cy="60" r="55" fill="url(#trophyGrad)" opacity="0.2"/>
+                    <path d="M40 30h40v30c0 11-9 20-20 20s-20-9-20-20V30z" fill="url(#trophyGrad)"/>
+                    <rect x="55" y="75" width="10" height="20" fill="url(#trophyGrad)"/>
+                    <rect x="45" y="95" width="30" height="8" rx="4" fill="url(#trophyGrad)"/>
+                    <path d="M40 30h-10c-5 0-10 5-10 10v5c0 8 6 15 14 15h6" stroke="url(#trophyGrad)" stroke-width="3" fill="none"/>
+                    <path d="M80 30h10c5 0 10 5 10 10v5c0 8-6 15-14 15h-6" stroke="url(#trophyGrad)" stroke-width="3" fill="none"/>
+                    <defs>
+                        <linearGradient id="trophyGrad" x1="0" y1="0" x2="120" y2="120">
+                            <stop offset="0%" style="stop-color:#fbbf24"/>
+                            <stop offset="100%" style="stop-color:#f59e0b"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+
+                <h1 class="results-title">نتائج اللعبة</h1>
+
+                <div class="winner-display">
+                    <div class="winner-name" id="winner-team">الفريق الفائز</div>
+                    <div class="winner-score"><span id="winner-score">0</span> نقطة 🏆</div>
+                </div>
+
+                <div class="loser-display">
+                    <div class="loser-name" id="loser-team">الفريق الثاني</div>
+                    <div class="loser-score"><span id="loser-score">0</span> نقطة</div>
+                </div>
+
+                <div class="results-actions">
+                    <button class="btn btn-primary" id="play-again-btn">
+                        <span>🔄 العب مرة أخرى</span>
+                    </button>
+                    <button class="btn btn-success" id="new-game-btn">
+                        <span>🎮 لعبة جديدة</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

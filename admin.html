@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إعداد الأسئلة - سؤال وجواب</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Admin Setup Screen -->
+    <div id="admin-screen" class="screen active">
+        <div class="container">
+            <div class="admin-content">
+                <!-- Logo SVG -->
+                <div class="logo-container">
+                    <svg class="logo-svg" width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="60" cy="60" r="55" fill="url(#adminGrad1)" opacity="0.2"/>
+                        <circle cx="60" cy="60" r="45" stroke="url(#adminGrad2)" stroke-width="3" fill="none"/>
+                        <text x="60" y="70" text-anchor="middle" font-size="45" font-weight="bold" fill="url(#adminGrad2)">⚙️</text>
+                        <defs>
+                            <linearGradient id="adminGrad1" x1="0" y1="0" x2="120" y2="120">
+                                <stop offset="0%" style="stop-color:#667eea"/>
+                                <stop offset="100%" style="stop-color:#764ba2"/>
+                            </linearGradient>
+                            <linearGradient id="adminGrad2" x1="0" y1="0" x2="120" y2="120">
+                                <stop offset="0%" style="stop-color:#667eea"/>
+                                <stop offset="50%" style="stop-color:#764ba2"/>
+                                <stop offset="100%" style="stop-color:#f56565"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+
+                <h1>إعداد الأسئلة</h1>
+                <p class="subtitle">أضف أسئلتك المخصصة للعبة</p>
+                
+                <div class="admin-section">
+                    <div class="admin-card">
+                        <div class="admin-header">
+                            <h2>📝 إضافة الأسئلة</h2>
+                            <div class="preview-info">
+                                <span id="questions-count">0</span> سؤال تم تحليلها
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="questions-input">الصق قائمة الأسئلة هنا:</label>
+                            <textarea id="questions-input" placeholder="مثال:
+تاريخ
+في أي عام بدأت الحرب العالمية الأولى؟
+1914
+
+جغرافيا
+ما هي عاصمة فرنسا؟
+باريس
+
+علوم
+ما هو الرمز الكيميائي للماء؟
+H2O"></textarea>
+                        </div>
+                        
+                        <div class="format-info">
+                            <h3>📋 تنسيق الأسئلة:</h3>
+                            <ul>
+                                <li>اكتب اسم الفئة في سطر منفصل</li>
+                                <li>اكتب السؤال في السطر التالي</li>
+                                <li>اكتب الإجابة في السطر التالي</li>
+                                <li>اترك سطر فارغ بين كل سؤال</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-actions">
+                    <button id="save-questions" class="btn btn-success" disabled>
+                        <span>💾 حفظ الأسئلة</span>
+                    </button>
+                    <a href="index.html" class="btn btn-primary">
+                        <span>🏠 العودة للصفحة الرئيسية</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
