@@ -513,14 +513,12 @@ class UIManager {
                 const img = document.createElement('img');
                 img.src = media.url;
                 img.alt = 'Question Image';
-                img.style.maxWidth = '400px';
-                img.style.maxHeight = '400px';
-                img.style.width = 'auto';
-                img.style.height = 'auto';
-                img.style.objectFit = 'contain';
                 img.onerror = () => {
                     console.log('Failed to load image:', media.url);
                     this.elements.questionMedia.innerHTML = '<p style="color: #e53e3e; text-align: center;">فشل في تحميل الصورة</p>';
+                };
+                img.onclick = () => {
+                    this.showImageModal(media.url);
                 };
                 this.elements.questionMedia.appendChild(img);
             } else if (media.type === 'video') {
@@ -539,10 +537,10 @@ class UIManager {
                 let embedUrl = media.url;
                 if (media.url.includes('youtu.be/')) {
                     const videoId = media.url.split('youtu.be/')[1].split('?')[0];
-                    embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                    embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&fs=1&cc_load_policy=1`;
                 } else if (media.url.includes('youtube.com/watch')) {
                     const videoId = media.url.split('v=')[1].split('&')[0];
-                    embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                    embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&fs=1&cc_load_policy=1`;
                 }
                 
                 const iframe = document.createElement('iframe');
@@ -551,11 +549,35 @@ class UIManager {
                 iframe.height = '315';
                 iframe.style.border = 'none';
                 iframe.allowFullscreen = true;
+                iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
                 iframe.style.maxWidth = '100%';
-                iframe.onerror = () => {
-                    console.log('Failed to load YouTube video:', media.url);
-                    this.elements.questionMedia.innerHTML = '<p style="color: #e53e3e; text-align: center;">فشل في تحميل فيديو يوتيوب</p>';
+                iframe.setAttribute('frameborder', '0');
+                iframe.setAttribute('title', 'YouTube video player');
+                
+                // Add timeout for YouTube video loading
+                const loadTimeout = setTimeout(() => {
+                    console.log('YouTube video loading timeout:', media.url);
+                    this.elements.questionMedia.innerHTML = '<p style="color: #e53e3e; text-align: center;">انتهت مهلة تحميل فيديو يوتيوب</p>';
+                }, 10000); // 10 second timeout
+                
+                iframe.onload = () => {
+                    clearTimeout(loadTimeout);
+                    console.log('YouTube video loaded successfully:', media.url);
                 };
+                
+                iframe.onerror = () => {
+                    clearTimeout(loadTimeout);
+                    console.log('Failed to load YouTube video:', media.url);
+                    this.elements.questionMedia.innerHTML = `
+                        <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 10px; border: 2px solid #e53e3e;">
+                            <p style="color: #e53e3e; margin-bottom: 15px; font-size: 1.1rem;">فشل في تحميل فيديو يوتيوب</p>
+                            <a href="${media.url}" target="_blank" style="color: #667eea; text-decoration: none; font-weight: 600;">
+                                انقر هنا لمشاهدة الفيديو على يوتيوب
+                            </a>
+                        </div>
+                    `;
+                };
+                
                 this.elements.questionMedia.appendChild(iframe);
             } else if (media.type === 'audio') {
                 const audio = document.createElement('audio');
@@ -632,6 +654,43 @@ class UIManager {
         }
         if (this.elements.loserScore) {
             this.elements.loserScore.textContent = loserScore;
+        }
+    }
+
+    showImageModal(imageUrl) {
+        const modal = document.getElementById('image-modal');
+        const modalImage = document.getElementById('modal-image');
+        const closeBtn = document.querySelector('.image-modal-close');
+        
+        if (modal && modalImage) {
+            modalImage.src = imageUrl;
+            modal.classList.add('active');
+            
+            // Close modal when clicking close button
+            if (closeBtn) {
+                closeBtn.onclick = () => this.hideImageModal();
+            }
+            
+            // Close modal when clicking outside the image
+            modal.onclick = (e) => {
+                if (e.target === modal) {
+                    this.hideImageModal();
+                }
+            };
+            
+            // Close modal with Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
+                    this.hideImageModal();
+                }
+            });
+        }
+    }
+
+    hideImageModal() {
+        const modal = document.getElementById('image-modal');
+        if (modal) {
+            modal.classList.remove('active');
         }
     }
 }
