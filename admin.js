@@ -71,38 +71,31 @@ class AdminController {
     }
 
     parseQuestions(text) {
-        // Clean and validate the input text first
-        const cleanedText = this.cleanAndValidateText(text);
-        if (!cleanedText.isValid) {
-            this.showValidationError(cleanedText.errors);
+        // Clean the input text first
+        const cleanedText = this.cleanSpecialCharacters(text);
+        
+        // Only do basic validation, not strict validation
+        if (!text || text.trim().length === 0) {
             return [];
         }
 
-        const lines = cleanedText.text.split('\n').map(line => line.trim()).filter(line => line);
+        const lines = cleanedText.split('\n').map(line => line.trim()).filter(line => line);
         const questions = [];
         let currentCategory = '';
         let currentQuestion = null;
-        const validationErrors = [];
 
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
             
             // Check if line is a category (single word, no question mark, no http, and not a common answer word)
-            if (line && !line.includes('؟') && !line.startsWith('http') && 
-                !this.isCommonAnswerWord(line) && line.length < 50) {
+            if (line && !line.includes('؟') && !line.includes('؟') && !line.includes('.') && !line.startsWith('http') && 
+                !this.isCommonAnswerWord(line)) {
                 currentCategory = line;
                 continue;
             }
 
             // Check if line is a question (contains question mark)
             if (line.includes('؟')) {
-                // Validate question format
-                const questionValidation = this.validateQuestion(line);
-                if (!questionValidation.isValid) {
-                    validationErrors.push(`السطر ${i + 1}: ${questionValidation.error}`);
-                    continue;
-                }
-
                 if (currentQuestion) {
                     questions.push(currentQuestion);
                 }
@@ -123,13 +116,6 @@ class AdminController {
             }
             // Check if line is an answer (doesn't contain question mark, follows a question)
             else if (currentQuestion && !currentQuestion.answer) {
-                // Validate answer format
-                const answerValidation = this.validateAnswer(line);
-                if (!answerValidation.isValid) {
-                    validationErrors.push(`السطر ${i + 1}: ${answerValidation.error}`);
-                    continue;
-                }
-
                 currentQuestion.answer = line;
                 
                 // Check for media URLs in answer text (only if not already found in question)
@@ -156,11 +142,6 @@ class AdminController {
         // Add the last question
         if (currentQuestion) {
             questions.push(currentQuestion);
-        }
-
-        // Show validation errors if any
-        if (validationErrors.length > 0) {
-            this.showValidationError(validationErrors);
         }
 
         return questions;
@@ -206,9 +187,9 @@ class AdminController {
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
             
-            // Check if line is a category (single word, no question mark, not a URL, not a common answer)
-            if (line && !line.includes('؟') && !line.startsWith('http') && 
-                !this.isCommonAnswerWord(line) && line.length < 50) {
+            // Check if line is a category
+            if (line && !line.includes('؟') && !line.includes('.') && !line.startsWith('http') && 
+                !this.isCommonAnswerWord(line)) {
                 currentCategory = line;
                 expectingAnswer = false;
                 continue;
@@ -222,7 +203,7 @@ class AdminController {
                     hasValidStructure = true;
                 }
             }
-            // Check if line is an answer (follows a question, not a question, not a URL)
+            // Check if line is an answer (follows a question)
             else if (expectingAnswer && !line.includes('؟') && !line.startsWith('http')) {
                 answerCount++;
                 expectingAnswer = false;
@@ -239,12 +220,6 @@ class AdminController {
 
         if (questionCount !== answerCount) {
             errors.push(`عدد الأسئلة (${questionCount}) لا يتطابق مع عدد الإجابات (${answerCount}).`);
-            console.log('Validation Debug:', {
-                questionCount,
-                answerCount,
-                lines: lines.length,
-                linesPreview: lines.slice(0, 10)
-            });
         }
 
         return {
@@ -396,13 +371,6 @@ class AdminController {
         const result = this.elements.chatgptResult.value.trim();
         if (!result) {
             alert('يرجى إدخال النتيجة من ChatGPT أولاً');
-            return;
-        }
-
-        // Validate the result before using it
-        const validation = this.cleanAndValidateText(result);
-        if (!validation.isValid) {
-            alert(`النتيجة تحتوي على أخطاء:\n\n${validation.errors.join('\n')}\n\nيرجى تصحيح الأخطاء أولاً.`);
             return;
         }
 
