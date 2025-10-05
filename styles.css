@@ -1519,6 +1519,61 @@ input[type="text"]:focus {
     margin-bottom: 15px;
 }
 
+/* Enhanced mobile touch targets */
+@media (max-width: 768px) {
+    .modal-content {
+        touch-action: manipulation;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .modal-body {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+    
+    /* Improve copy button for mobile */
+    #copy-prompt {
+        width: 100%;
+        margin-top: 8px;
+        min-height: 44px;
+        font-size: 1rem;
+        padding: 12px 20px;
+    }
+    
+    /* Better spacing for mobile */
+    .input-group {
+        margin-bottom: 20px;
+    }
+    
+    .prompt-container,
+    .result-container {
+        margin-bottom: 20px;
+    }
+    
+    /* Improve textarea usability on mobile */
+    #chatgpt-prompt,
+    #chatgpt-result {
+        -webkit-appearance: none;
+        appearance: none;
+        border: 2px solid #ddd;
+        transition: border-color 0.3s ease;
+    }
+    
+    #chatgpt-prompt:focus,
+    #chatgpt-result:focus {
+        border-color: #2196f3;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+    }
+    
+    /* Better button spacing */
+    .modal-actions {
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid #e9ecef;
+    }
+}
+
 .chatgpt-instructions h3 {
     color: #495057;
     margin-bottom: 10px;
@@ -1652,26 +1707,294 @@ input[type="text"]:focus {
 
 /* Responsive Design for Modal */
 @media (max-width: 768px) {
+    .modal {
+        padding: 10px;
+    }
+    
     .modal-content {
-        width: 95%;
-        margin: 10px;
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        max-height: 95vh;
+        border-radius: 10px;
     }
     
     .modal-body {
-        padding: 20px;
+        padding: 15px;
+        max-height: calc(95vh - 120px);
+        overflow-y: auto;
     }
     
     .modal-header {
-        padding: 15px 20px;
+        padding: 12px 15px;
+        flex-wrap: wrap;
+        gap: 10px;
     }
     
     .modal-header h2 {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .modal-close {
+        font-size: 24px;
+        padding: 5px;
+        min-width: 34px;
+        min-height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .chatgpt-instructions {
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+    
+    .chatgpt-instructions h3 {
+        font-size: 1rem;
+        margin-bottom: 8px;
+    }
+    
+    .chatgpt-instructions p {
+        font-size: 0.9rem;
+        line-height: 1.4;
+    }
+    
+    .input-group {
+        margin-bottom: 15px;
+    }
+    
+    .input-group label {
+        font-size: 1rem;
+        margin-bottom: 8px;
+    }
+    
+    #categories-input {
+        padding: 12px;
+        font-size: 1rem;
+        min-height: 44px;
+        border-radius: 8px;
+    }
+    
+    .prompt-container,
+    .result-container {
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+    
+    .prompt-container label,
+    .result-container label {
+        font-size: 0.95rem;
+        margin-bottom: 8px;
+    }
+    
+    #chatgpt-prompt,
+    #chatgpt-result {
+        min-height: 100px;
+        padding: 12px;
+        font-size: 0.9rem;
+        line-height: 1.4;
+        border-radius: 6px;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 15px;
+    }
+    
+    .modal-actions .btn {
+        width: 100%;
+        min-width: auto;
+        padding: 12px 20px;
+        font-size: 1rem;
+        min-height: 44px;
+        border-radius: 8px;
+    }
+    
+    .btn-secondary {
+        margin-top: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal {
+        padding: 5px;
+    }
+    
+    .modal-content {
+        max-height: 98vh;
+        border-radius: 8px;
+    }
+    
+    .modal-body {
+        padding: 12px;
+        max-height: calc(98vh - 100px);
+    }
+    
+    .modal-header {
+        padding: 10px 12px;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.1rem;
+    }
+    
+    .modal-close {
+        font-size: 20px;
+        min-width: 30px;
+        min-height: 30px;
     }
     
     .chatgpt-instructions,
     .prompt-container,
     .result-container {
-        padding: 15px;
+        padding: 10px;
+    }
+    
+    .chatgpt-instructions h3 {
+        font-size: 0.95rem;
+    }
+    
+    .chatgpt-instructions p {
+        font-size: 0.85rem;
+    }
+    
+    .input-group label {
+        font-size: 0.95rem;
+    }
+    
+    #categories-input {
+        padding: 10px;
+        font-size: 0.95rem;
+        min-height: 40px;
+    }
+    
+    .prompt-container label,
+    .result-container label {
+        font-size: 0.9rem;
+    }
+    
+    #chatgpt-prompt,
+    #chatgpt-result {
+        min-height: 80px;
+        padding: 10px;
+        font-size: 0.85rem;
+    }
+    
+    .modal-actions .btn {
+        padding: 10px 16px;
+        font-size: 0.95rem;
+        min-height: 40px;
+    }
+}
+
+/* Landscape orientation improvements */
+@media (max-width: 768px) and (orientation: landscape) {
+    .modal-content {
+        max-height: 90vh;
+    }
+    
+    .modal-body {
+        max-height: calc(90vh - 80px);
+        padding: 10px;
+    }
+    
+    .chatgpt-instructions,
+    .prompt-container,
+    .result-container {
+        padding: 8px;
+        margin-bottom: 10px;
+    }
+    
+    #chatgpt-prompt,
+    #chatgpt-result {
+        min-height: 60px;
+    }
+    
+    .modal-actions {
+        margin-top: 10px;
+        padding-top: 10px;
+    }
+    
+    .modal-actions .btn {
+        padding: 8px 16px;
+        min-height: 36px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Very small screens (320px and below) */
+@media (max-width: 320px) {
+    .modal {
+        padding: 2px;
+    }
+    
+    .modal-content {
+        max-height: 99vh;
+        border-radius: 6px;
+    }
+    
+    .modal-body {
+        padding: 8px;
+        max-height: calc(99vh - 80px);
+    }
+    
+    .modal-header {
+        padding: 8px 10px;
+    }
+    
+    .modal-header h2 {
+        font-size: 1rem;
+    }
+    
+    .modal-close {
+        font-size: 18px;
+        min-width: 28px;
+        min-height: 28px;
+    }
+    
+    .chatgpt-instructions,
+    .prompt-container,
+    .result-container {
+        padding: 8px;
+    }
+    
+    .chatgpt-instructions h3 {
+        font-size: 0.9rem;
+    }
+    
+    .chatgpt-instructions p {
+        font-size: 0.8rem;
+    }
+    
+    .input-group label {
+        font-size: 0.9rem;
+    }
+    
+    #categories-input {
+        padding: 8px;
+        font-size: 0.9rem;
+        min-height: 36px;
+    }
+    
+    .prompt-container label,
+    .result-container label {
+        font-size: 0.85rem;
+    }
+    
+    #chatgpt-prompt,
+    #chatgpt-result {
+        min-height: 70px;
+        padding: 8px;
+        font-size: 0.8rem;
+    }
+    
+    .modal-actions .btn {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+        min-height: 36px;
     }
 }
