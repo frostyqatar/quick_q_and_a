@@ -104,6 +104,45 @@ H2O"></textarea>
                     <input type="text" id="categories-input" placeholder="مثال: علوم، تاريخ، جغرافيا، رياضيات، أدب" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 0.9rem;">
                 </div>
                 
+                <div class="category-selection">
+                    <h4>📋 اختر الفئات:</h4>
+                    <div class="category-grid">
+                        <div class="category-box" data-category="العلوم والاختراعات">العلوم والاختراعات</div>
+                        <div class="category-box" data-category="الجغرافيا العالمية">الجغرافيا العالمية</div>
+                        <div class="category-box" data-category="جغرافيا قطر">جغرافيا قطر</div>
+                        <div class="category-box" data-category="التاريخ العالمي">التاريخ العالمي</div>
+                        <div class="category-box" data-category="تاريخ قطر">تاريخ قطر</div>
+                        <div class="category-box" data-category="الفضاء والفلك">الفضاء والفلك</div>
+                        <div class="category-box" data-category="جسم الإنسان والصحة">جسم الإنسان والصحة</div>
+                        <div class="category-box" data-category="الرياضيات والمنطق">الرياضيات والمنطق</div>
+                        <div class="category-box" data-category="شركات الهواتف">شركات الهواتف</div>
+                        <div class="category-box" data-category="ماركات الساعات">ماركات الساعات</div>
+                        <div class="category-box" data-category="ماركات العطور">ماركات العطور</div>
+                        <div class="category-box" data-category="ماركات وشعارات السيارات">ماركات وشعارات السيارات</div>
+                        <div class="category-box" data-category="الموضة والعلامات الفاخرة">الموضة والعلامات الفاخرة</div>
+                        <div class="category-box" data-category="حقائق عن الحيوانات">حقائق عن الحيوانات</div>
+                        <div class="category-box" data-category="النباتات والطبيعة">النباتات والطبيعة</div>
+                        <div class="category-box" data-category="الوعي البيئي">الوعي البيئي</div>
+                        <div class="category-box" data-category="الأنمي (مثل ناروتو، ون بيس، هجوم العمالقة، قاتل الشياطين، جوجوتسو كايسن)">الأنمي</div>
+                        <div class="category-box" data-category="الأفلام والمسلسلات">الأفلام والمسلسلات</div>
+                        <div class="category-box" data-category="الموسيقى والمغنين">الموسيقى والمغنين</div>
+                        <div class="category-box" data-category="الرسوم المتحركة والكرتون">الرسوم المتحركة والكرتون</div>
+                        <div class="category-box" data-category="ألعاب الفيديو والرياضات الإلكترونية">ألعاب الفيديو والرياضات الإلكترونية</div>
+                        <div class="category-box" data-category="الأطعمة والمشروبات حول العالم">الأطعمة والمشروبات حول العالم</div>
+                        <div class="category-box" data-category="الرياضة والرياضيون">الرياضة والرياضيون</div>
+                        <div class="category-box" data-category="التكنولوجيا والأجهزة">التكنولوجيا والأجهزة</div>
+                        <div class="category-box" data-category="حقائق عامة ومعلومات ممتعة">حقائق عامة ومعلومات ممتعة</div>
+                    </div>
+                    <div class="category-actions">
+                        <button id="select-all-categories" class="btn btn-secondary">
+                            <span>✅ تحديد الكل</span>
+                        </button>
+                        <button id="clear-categories" class="btn btn-secondary">
+                            <span>❌ إلغاء الكل</span>
+                        </button>
+                    </div>
+                </div>
+                
                 <div class="prompt-container">
                     <label for="chatgpt-prompt">النص للنسخ إلى ChatGPT:</label>
                     <textarea id="chatgpt-prompt" readonly></textarea>

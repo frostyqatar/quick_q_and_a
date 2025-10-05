@@ -13,8 +13,12 @@ class AdminController {
             copyPromptBtn: document.getElementById('copy-prompt'),
             chatgptResult: document.getElementById('chatgpt-result'),
             useResultBtn: document.getElementById('use-result'),
-            cancelChatGPTBtn: document.getElementById('cancel-chatgpt')
+            cancelChatGPTBtn: document.getElementById('cancel-chatgpt'),
+            selectAllCategories: document.getElementById('select-all-categories'),
+            clearCategories: document.getElementById('clear-categories')
         };
+        
+        this.selectedCategories = new Set();
         
         this.initializeEventListeners();
         this.loadSavedQuestions();
@@ -60,6 +64,18 @@ class AdminController {
                 this.hideChatGPTModal();
             }
         });
+
+        // Category selection event listeners
+        this.elements.selectAllCategories.addEventListener('click', () => {
+            this.selectAllCategories();
+        });
+
+        this.elements.clearCategories.addEventListener('click', () => {
+            this.clearAllCategories();
+        });
+
+        // Add click listeners to category boxes
+        this.initializeCategoryBoxes();
     }
 
     updateQuestionsPreview() {
@@ -87,13 +103,6 @@ class AdminController {
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
             
-            // Check if line is a category (single word, no question mark, no http, and not a common answer word)
-            if (line && !line.includes('؟') && !line.includes('؟') && !line.includes('.') && !line.startsWith('http') && 
-                !this.isCommonAnswerWord(line)) {
-                currentCategory = line;
-                continue;
-            }
-
             // Check if line is a question (contains question mark)
             if (line.includes('؟')) {
                 if (currentQuestion) {
@@ -114,6 +123,15 @@ class AdminController {
                     currentQuestion.text = line.replace(mediaMatch.url, '').trim();
                 }
             }
+            // Check if line is a media URL (starts with http and follows a question/answer)
+            else if (currentQuestion && this.isMediaUrl(line)) {
+                if (!currentQuestion.media) {
+                    const mediaMatch = this.extractMedia(line);
+                    if (mediaMatch) {
+                        currentQuestion.media = mediaMatch;
+                    }
+                }
+            }
             // Check if line is an answer (doesn't contain question mark, follows a question)
             else if (currentQuestion && !currentQuestion.answer) {
                 currentQuestion.answer = line;
@@ -128,14 +146,10 @@ class AdminController {
                     }
                 }
             }
-            // Check if line is a media URL (starts with http and follows a question/answer)
-            else if (currentQuestion && this.isMediaUrl(line)) {
-                if (!currentQuestion.media) {
-                    const mediaMatch = this.extractMedia(line);
-                    if (mediaMatch) {
-                        currentQuestion.media = mediaMatch;
-                    }
-                }
+            // Check if line is a category (no question mark, no http, and not a common answer word)
+            else if (line && !line.includes('؟') && !line.startsWith('http') && 
+                !this.isCommonAnswerWord(line)) {
+                currentCategory = line;
             }
         }
 
@@ -374,10 +388,8 @@ class AdminController {
             return;
         }
 
-        // Add the result to the main questions input
-        const currentText = this.elements.questionsInput.value;
-        const separator = currentText ? '\n\n' : '';
-        this.elements.questionsInput.value = currentText + separator + result;
+        // Replace the content instead of appending
+        this.elements.questionsInput.value = result;
         
         // Update the preview
         this.updateQuestionsPreview();
@@ -388,8 +400,8 @@ class AdminController {
         // Clear the result textarea
         this.elements.chatgptResult.value = '';
         
-        // Show success message
-        alert('تم إضافة الأسئلة بنجاح! يمكنك الآن مراجعة الأسئلة وحفظها.');
+        // Stay on the admin page (إعداد الأسئلة) - no redirect needed
+        // The user can now see the pasted questions in the textarea
     }
 
     extractMedia(text) {
@@ -482,6 +494,56 @@ class AdminController {
                 console.log('Could not load saved questions:', error);
             }
         }
+    }
+
+    initializeCategoryBoxes() {
+        const categoryBoxes = document.querySelectorAll('.category-box');
+        categoryBoxes.forEach(box => {
+            box.addEventListener('click', () => {
+                this.toggleCategorySelection(box);
+            });
+        });
+    }
+
+    toggleCategorySelection(categoryBox) {
+        const category = categoryBox.getAttribute('data-category');
+        
+        if (this.selectedCategories.has(category)) {
+            // Remove from selection
+            this.selectedCategories.delete(category);
+            categoryBox.classList.remove('selected');
+        } else {
+            // Add to selection
+            this.selectedCategories.add(category);
+            categoryBox.classList.add('selected');
+        }
+        
+        this.updateCategoriesInput();
+    }
+
+    selectAllCategories() {
+        const categoryBoxes = document.querySelectorAll('.category-box');
+        categoryBoxes.forEach(box => {
+            const category = box.getAttribute('data-category');
+            this.selectedCategories.add(category);
+            box.classList.add('selected');
+        });
+        this.updateCategoriesInput();
+    }
+
+    clearAllCategories() {
+        const categoryBoxes = document.querySelectorAll('.category-box');
+        categoryBoxes.forEach(box => {
+            box.classList.remove('selected');
+        });
+        this.selectedCategories.clear();
+        this.updateCategoriesInput();
+    }
+
+    updateCategoriesInput() {
+        const categoriesArray = Array.from(this.selectedCategories);
+        this.elements.categoriesInput.value = categoriesArray.join('، ');
+        this.updateChatGPTPrompt();
     }
 }
 
