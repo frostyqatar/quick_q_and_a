@@ -200,6 +200,7 @@ class QuestionParser {
         const audioRegex = /(https?:\/\/[^\s]+\.(mp3|wav|ogg|m4a|aac))/i;
         const audioMatch = text.match(audioRegex);
         if (audioMatch) {
+            console.log('Audio URL detected:', audioMatch[1]);
             return { type: 'audio', url: audioMatch[1] };
         }
 
@@ -511,7 +512,10 @@ class UIManager {
             return; // Media hasn't changed, don't recreate
         }
         
+        console.log('updateMedia called with:', media);
         this.elements.questionMedia.innerHTML = '';
+        // Remove any media-specific classes
+        this.elements.questionMedia.classList.remove('audio-container');
         this.currentMedia = media;
         
         if (media) {
@@ -586,6 +590,10 @@ class UIManager {
                 
                 this.elements.questionMedia.appendChild(iframe);
             } else if (media.type === 'audio') {
+                console.log('Creating audio element for:', media.url);
+                // Add audio-specific class to container
+                this.elements.questionMedia.classList.add('audio-container');
+                
                 const audio = document.createElement('audio');
                 audio.src = media.url;
                 audio.controls = true;
@@ -595,11 +603,19 @@ class UIManager {
                 audio.style.pointerEvents = 'auto';
                 audio.style.userSelect = 'auto';
                 audio.style.touchAction = 'manipulation';
-                audio.onerror = () => {
-                    console.log('Failed to load audio:', media.url);
+                
+                audio.onload = () => {
+                    console.log('Audio loaded successfully:', media.url);
+                };
+                
+                audio.onerror = (e) => {
+                    console.log('Failed to load audio:', media.url, e);
                     this.elements.questionMedia.innerHTML = '<p style="color: #e53e3e; text-align: center;">فشل في تحميل الملف الصوتي</p>';
                 };
+                
+                console.log('Appending audio element to media container');
                 this.elements.questionMedia.appendChild(audio);
+                console.log('Media container children:', this.elements.questionMedia.children.length);
             }
         }
     }
