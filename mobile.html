@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>سؤال وجواب - موبايل</title>
+    <link rel="stylesheet" href="mobile.css">
+</head>
+<body>
+    <!-- Home Screen -->
+    <div id="home-screen" class="screen active">
+        <div class="mobile-container">
+            <div class="mobile-header">
+                <div class="logo-mobile">
+                    <svg width="80" height="80" viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="75" cy="75" r="70" fill="url(#grad1)" opacity="0.2"/>
+                        <circle cx="75" cy="75" r="60" stroke="url(#grad2)" stroke-width="4" fill="none"/>
+                        <text x="75" y="85" text-anchor="middle" font-size="60" font-weight="bold" fill="url(#grad2)">؟</text>
+                        <defs>
+                            <linearGradient id="grad1" x1="0" y1="0" x2="150" y2="150">
+                                <stop offset="0%" style="stop-color:#667eea"/>
+                                <stop offset="100%" style="stop-color:#764ba2"/>
+                            </linearGradient>
+                            <linearGradient id="grad2" x1="0" y1="0" x2="150" y2="150">
+                                <stop offset="0%" style="stop-color:#667eea"/>
+                                <stop offset="50%" style="stop-color:#764ba2"/>
+                                <stop offset="100%" style="stop-color:#f56565"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <h1 class="mobile-title">سؤال وجواب</h1>
+                <p class="mobile-subtitle">تحدى واختبر معلوماتك!</p>
+            </div>
+
+            <div class="team-setup-mobile">
+                <div class="team-input-mobile team-1">
+                    <div class="team-label-mobile">الفريق الأول</div>
+                    <input type="text" id="team1-name-mobile" placeholder="أدخل اسم الفريق" class="team-input-field">
+                </div>
+
+                <div class="team-input-mobile team-2">
+                    <div class="team-label-mobile">الفريق الثاني</div>
+                    <input type="text" id="team2-name-mobile" placeholder="أدخل اسم الفريق" class="team-input-field">
+                </div>
+            </div>
+
+            <div class="mobile-actions">
+                <button id="start-game-mobile" class="btn-mobile btn-start" disabled>
+                    <span>🎮 ابدأ اللعبة</span>
+                </button>
+
+                <a href="admin.html" class="btn-mobile btn-admin">
+                    <span>⚙️ إعداد الأسئلة</span>
+                </a>
+                
+                <a href="index.html" class="btn-mobile btn-secondary">
+                    <span>🖥️ النسخة الكاملة</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Screen (Public Display) -->
+    <div id="game-screen-mobile" class="screen">
+        <div class="mobile-container">
+            <div class="game-header-mobile">
+                <div class="current-turn-mobile">
+                    <div class="turn-badge-mobile" id="current-team-display-mobile">دور الفريق الأول</div>
+                </div>
+                <div class="progress-timer-mobile">
+                    <div class="question-progress-mobile">
+                        <span id="current-question-number-mobile">1</span> / <span id="total-questions-mobile">10</span>
+                    </div>
+                    <div class="timer-circle-mobile">
+                        <span id="timer-display-mobile">60</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="scores-container-mobile">
+                <div class="team-score-mobile team-1 active" id="team1-score-display-mobile">
+                    <div class="team-name-mobile" id="team1-name-display-mobile">الفريق الأول</div>
+                    <div class="score-display-mobile">
+                        <div class="score-item-mobile">
+                            <div class="score-label-mobile">✓ صحيح</div>
+                            <div class="score-value-mobile" id="team1-score-mobile">0</div>
+                        </div>
+                        <div class="score-item-mobile wrong">
+                            <div class="score-label-mobile">✗ خطأ</div>
+                            <div class="score-value-mobile" id="team1-wrong-mobile">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-score-mobile team-2" id="team2-score-display-mobile">
+                    <div class="team-name-mobile" id="team2-name-display-mobile">الفريق الثاني</div>
+                    <div class="score-display-mobile">
+                        <div class="score-item-mobile">
+                            <div class="score-label-mobile">✓ صحيح</div>
+                            <div class="score-value-mobile" id="team2-score-mobile">0</div>
+                        </div>
+                        <div class="score-item-mobile wrong">
+                            <div class="score-label-mobile">✗ خطأ</div>
+                            <div class="score-value-mobile" id="team2-wrong-mobile">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Question Screen (Moderator Only) -->
+    <div id="question-screen-mobile" class="screen">
+        <div class="mobile-container">
+            <div class="game-header-mobile">
+                <div class="current-turn-mobile">
+                    <div class="turn-badge-mobile" id="question-team-display-mobile">دور الفريق الأول</div>
+                </div>
+                <div class="progress-timer-mobile">
+                    <div class="question-progress-mobile">
+                        <span id="question-number-mobile">1</span> / <span id="total-questions-display-mobile">10</span>
+                    </div>
+                    <div class="timer-controls-mobile">
+                        <div class="timer-circle-mobile">
+                            <span id="timer-display-question-mobile">60</span>
+                        </div>
+                        <button id="pause-timer-btn-mobile" class="btn-mobile btn-timer">
+                            <span>⏸️ إيقاف</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-display-mobile">
+                <div class="category-badge-mobile" id="question-category-mobile">عام</div>
+                <div class="question-text-mobile" id="question-text-mobile">ما هو السؤال؟</div>
+                <div id="question-media-mobile" class="media-container-mobile">
+                    <!-- Image or video will be inserted here -->
+                </div>
+                
+                <div class="answer-buttons-mobile">
+                    <button class="btn-mobile btn-correct" id="correct-btn-mobile">
+                        <span>✓ إجابة صحيحة</span>
+                    </button>
+                    <button class="btn-mobile btn-wrong" id="incorrect-btn-mobile">
+                        <span>✗ إجابة خاطئة</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="scoreboard-mobile">
+                <div class="scoreboard-team-mobile team-1" id="scoreboard-team1-mobile">
+                    <div class="team-name-mobile" id="scoreboard-team1-name-mobile">الفريق الأول</div>
+                    <div class="team-score-mobile" id="scoreboard-team1-correct-mobile">0</div>
+                </div>
+                
+                <div class="scoreboard-team-mobile team-2" id="scoreboard-team2-mobile">
+                    <div class="team-name-mobile" id="scoreboard-team2-name-mobile">الفريق الثاني</div>
+                    <div class="team-score-mobile" id="scoreboard-team2-correct-mobile">0</div>
+                </div>
+            </div>
+            
+            <div class="end-game-section-mobile">
+                <button class="btn-mobile btn-end-game" id="end-game-btn-mobile">
+                    <span>إنهاء اللعبة</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Answer Display Screen -->
+    <div id="answer-screen-mobile" class="screen">
+        <div class="mobile-container">
+            <div class="answer-reveal-mobile">
+                <div class="answer-header-mobile">الإجابة الصحيحة</div>
+                
+                <div class="category-badge-mobile" id="answer-category-mobile">عام</div>
+                <div class="question-text-mobile" id="answer-question-text-mobile">السؤال هنا</div>
+                
+                <div class="correct-answer-mobile">
+                    <div class="answer-label-mobile">الجواب:</div>
+                    <div class="answer-text-mobile" id="answer-text-mobile">الإجابة هنا</div>
+                </div>
+
+                <button class="btn-mobile btn-primary" id="next-question-btn-mobile">
+                    <span>السؤال التالي →</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Screen -->
+    <div id="results-screen-mobile" class="screen">
+        <div class="mobile-container">
+            <div class="results-container-mobile">
+                <div class="trophy-mobile">🏆</div>
+                <h1 class="results-title-mobile">نتائج اللعبة</h1>
+
+                <div class="winner-display-mobile">
+                    <div class="winner-name-mobile" id="winner-team-mobile">الفريق الفائز</div>
+                    <div class="winner-score-mobile"><span id="winner-score-mobile">0</span> نقطة</div>
+                </div>
+
+                <div class="loser-display-mobile">
+                    <div class="loser-name-mobile" id="loser-team-mobile">الفريق الثاني</div>
+                    <div class="loser-score-mobile"><span id="loser-score-mobile">0</span> نقطة</div>
+                </div>
+
+                <div class="results-actions-mobile">
+                    <button class="btn-mobile btn-primary" id="play-again-btn-mobile">
+                        <span>🔄 العب مرة أخرى</span>
+                    </button>
+                    <button class="btn-mobile btn-success" id="new-game-btn-mobile">
+                        <span>🎮 لعبة جديدة</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div id="image-modal-mobile" class="image-modal-mobile">
+        <span class="image-modal-close-mobile">&times;</span>
+        <img id="modal-image-mobile" src="" alt="Expanded">
+    </div>
+
+    <!-- No Questions Modal -->
+    <div id="no-questions-modal-mobile" class="modal-mobile">
+        <div class="modal-content-mobile">
+            <div class="modal-header-mobile">
+                <h2>⚠️ لا توجد أسئلة</h2>
+                <span class="modal-close-mobile">&times;</span>
+            </div>
+            <div class="modal-body-mobile">
+                <p>لم يتم إعداد أي أسئلة للعبة بعد.</p>
+                <p>يرجى الذهاب إلى <strong>إعداد الأسئلة</strong> لإضافة أسئلة قبل بدء اللعبة.</p>
+            </div>
+            <div class="modal-footer-mobile">
+                <a href="admin.html" class="btn-mobile btn-primary">
+                    <span>⚙️ إعداد الأسئلة</span>
+                </a>
+                <button class="btn-mobile btn-secondary modal-close-btn-mobile">
+                    <span>إلغاء</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="mobile.js"></script>
+</body>
+</html>
